@@ -4,6 +4,7 @@ let timerId = null;
 let currentExerciseIndex = 0;
 let remainingSeconds = routine.length > 0 ? routine[currentExerciseIndex].duration : 0;
 
+const timerElement = document.getElementById('timer');
 const currentExerciseElement = document.getElementById('current-exercise');
 const stopStretchingRoutineButton = document.getElementById('stop-stretching-routine');
 
@@ -27,6 +28,7 @@ function nextExercise() {
     if (currentExerciseIndex < routine.length - 1) {
         currentExerciseIndex++;
         renderCurrentExercise();
+        timerElement.textContent = `Current: ${remainingSeconds}s`;
     } else {
         clearInterval(timerId);
         console.log('Stretching routine completed.');
@@ -36,11 +38,12 @@ function nextExercise() {
 
 function startTimer() {
     clearInterval(timerId);
+    timerElement.textContent = `Current: ${remainingSeconds}s`;
     timerId = setInterval(() => {
-        const timerElement = document.getElementById('timer');
         remainingSeconds--;
-        if (remainingSeconds <= 0) {
+        if (remainingSeconds < 0) {
             nextExercise();
+            return;
         }
         timerElement.textContent = `Current: ${remainingSeconds}s`;
     }, 1000);
