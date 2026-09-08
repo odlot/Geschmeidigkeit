@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "start": "python3 -m http.server 8080 --directory frontend",
+    "server": "node backend/server.js",
+    "frontend": "python3 -m http.server 8080 --directory frontend",
+    "dev": "trap 'kill 0' SIGINT SIGTERM EXIT; npm run server & npm run frontend & wait",
     "lint": "eslint ."
   },
   "devDependencies": {
