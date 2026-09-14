@@ -1,14 +1,14 @@
 [
-    {
-        "name": "Stretch A",
-        "duration": "3"
-    },
-    {
-        "name": "Stretch B",
-        "duration": "3"
-    },
-    {
-        "name": "Stretch C",
-        "duration": "3"
-    }
+  {
+    "name": "Stretch A",
+    "duration": "3"
+  },
+  {
+    "name": "Stretch B",
+    "duration": "3"
+  },
+  {
+    "name": "Stretch C",
+    "duration": "3"
+  }
 ]

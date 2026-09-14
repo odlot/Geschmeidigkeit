@@ -3,7 +3,9 @@
     "server": "node backend/server.js",
     "frontend": "python3 -m http.server 8080 --directory frontend",
     "dev": "trap 'kill 0' SIGINT SIGTERM EXIT; npm run server & npm run frontend & wait",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@eslint/css": "^2.0.0",
@@ -11,6 +13,9 @@
     "@eslint/json": "^2.1.0",
     "@eslint/markdown": "^8.0.3",
     "eslint": "^10.10.0",
-    "globals": "^17.12.0"
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2"
   }
 }
