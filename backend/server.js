@@ -6,6 +6,11 @@ const hostname = '127.0.0.1';
 const port = 3000;
 const allowed_origin = `http://[::]:8080`;
 
+const jsonRoutes = {
+    "/api/exercises": "exercises.json",
+    "/api/state": "state.json",
+};
+
 const server = http.createServer((req, res) => {
     const origin = req.headers.origin;
     if (origin && origin === allowed_origin) {
@@ -21,18 +26,22 @@ const server = http.createServer((req, res) => {
     }
     
     const url = new URL(req.url, `http://${req.headers.host}`);
-    if (req.method === "GET" && url.pathname === "/api/exercises") {
-        const filePath = path.join(__dirname, "data", "exercises.json");
-        const exercises = JSON.parse(fs.readFileSync(filePath, "utf8"));
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(exercises));
+    if (req.method === "GET" && jsonRoutes[url.pathname]) {
+        serveJsonFile(res, jsonRoutes[url.pathname]);
         return;
     }
     res.statusCode = 404;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ error: 'Not Found' }));
 });
+
+function serveJsonFile(res, filename) {
+    const filePath = path.join(__dirname, "data", filename);
+    const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(data));
+}
 
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

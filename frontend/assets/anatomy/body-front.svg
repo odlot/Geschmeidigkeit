@@ -1,3 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" aria-label="Front of the body">
+<svg width="100" height="250" xmlns="http://www.w3.org/2000/svg" aria-label="Front of the body">
 <circle cx="50" cy="50" r="40" aria-label="Head"/>
+<rect x="30" y="90" width="40" height="60" aria-label="Torso"/>
+<rect x="20" y="150" width="20" height="50" aria-label="Left Leg"/>
+<rect x="60" y="150" width="20" height="50" aria-label="Right Leg"/>
 </svg>
