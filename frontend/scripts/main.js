@@ -54,10 +54,9 @@ const startStretchingRoutineButton = document.getElementById(
 startStretchingRoutineButton.addEventListener("click", async () => {
   try {
     console.log("Starting stretching routine...");
-    const response = await fetch("http://127.0.0.1:3000/api/exercises");
-    const exercises = await response.json();
-    console.log("Fetched exercises:", exercises);
-    sessionStorage.setItem("routine", JSON.stringify(exercises));
+    const response = await fetch("http://127.0.0.1:3000/api/routine");
+    const routine = await response.json();
+    sessionStorage.setItem("routine", JSON.stringify(routine));
     window.location.href = "stretching-routine.html";
   } catch (error) {
     console.error("Failed to start stretching routine:", error);

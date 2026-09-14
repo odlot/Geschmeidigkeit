@@ -7,7 +7,6 @@ const port = 3000;
 const allowed_origin = `http://[::]:8080`;
 
 const jsonRoutes = {
-  "/api/exercises": "exercises.json",
   "/api/state": "state.json",
   "/api/muscles": "muscles.json",
 };
@@ -30,7 +29,11 @@ const server = http.createServer((req, res) => {
   if (req.method === "GET" && jsonRoutes[url.pathname]) {
     serveJsonFile(res, jsonRoutes[url.pathname]);
     return;
+  } else if (req.method === "GET" && url.pathname === "/api/routine") {
+    serveRoutine(res);
+    return;
   }
+
   res.statusCode = 404;
   res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify({ error: "Not Found" }));
@@ -42,6 +45,19 @@ function serveJsonFile(res, filename) {
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify(data));
+}
+
+function serveRoutine(res) {
+  const filePath = path.join(__dirname, "data", "exercises.json");
+  const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  const routine = buildRoutine(data);
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(routine));
+}
+
+function buildRoutine(exercises) {
+  return exercises;
 }
 
 server.listen(port, hostname, () => {
