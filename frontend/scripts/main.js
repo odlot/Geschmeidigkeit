@@ -4,27 +4,34 @@ const STATUS_COLORS = {
     green: '#2ecc71',
 };
 
-async function fetchBodyAnatomy(containerSelector, asset, state) {
+async function fetchBodyAnatomy(containerSelector, asset, state, muscles) {
     const response = await fetch(asset);
     if (!response.ok) {
         throw new Error(`Failed to fetch ${asset}`);
     }
     const container = document.querySelector(containerSelector);
     container.innerHTML = await response.text();
-    for (const [id, status] of Object.entries(state)) {
-        const element = container.querySelector(`#${id}`);
-        if (element) {
-            element.style.fill = STATUS_COLORS[status];
-        }
+
+    for (const muscle of muscles) {
+        const element = container.querySelector(`#${muscle.id}`);
+        if (!element) continue;
+        const status = state[muscle.id];
+        element.style.fill = status ? STATUS_COLORS[status] : '#ccc';
+        element.setAttribute('aria-label', muscle.name);
+        element.addEventListener('click', () => console.log(muscle.name, status));
     }
 }
 
 async function renderBodyAnatomy() {
-    const stateResponse = await fetch('http://127.0.0.1:3000/api/state');
+    const [stateResponse, musclesResponse] = await Promise.all([
+        fetch('http://127.0.0.1:3000/api/state'),
+        fetch('http://127.0.0.1:3000/api/muscles')
+    ]);
     const state = await stateResponse.json();
+    const muscles = await musclesResponse.json();
     await Promise.all([
-        fetchBodyAnatomy('.body-front', 'assets/anatomy/body-front.svg', state),
-        fetchBodyAnatomy('.body-back', 'assets/anatomy/body-back.svg', state),
+        fetchBodyAnatomy('.body-front', 'assets/anatomy/body-front.svg', state, muscles),
+        fetchBodyAnatomy('.body-back', 'assets/anatomy/body-back.svg', state, muscles),
     ]);
 }
 

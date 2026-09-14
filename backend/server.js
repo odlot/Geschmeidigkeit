@@ -9,6 +9,7 @@ const allowed_origin = `http://[::]:8080`;
 const jsonRoutes = {
     "/api/exercises": "exercises.json",
     "/api/state": "state.json",
+    "/api/muscles": "muscles.json",
 };
 
 const server = http.createServer((req, res) => {
