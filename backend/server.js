@@ -56,8 +56,17 @@ function serveRoutine(res) {
   res.end(JSON.stringify(routine));
 }
 
+const BREAK_DURATION = 3;
+
 function buildRoutine(exercises) {
-  return exercises;
+  const routine = [];
+  exercises.forEach((exercise, index) => {
+    routine.push(exercise);
+    if (index < exercises.length - 1) {
+      routine.push({ name: "Break", duration: BREAK_DURATION });
+    }
+  });
+  return routine;
 }
 
 server.listen(port, hostname, () => {
