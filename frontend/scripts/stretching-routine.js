@@ -10,12 +10,18 @@ const currentExerciseElement = document.getElementById("current-exercise");
 const stopStretchingRoutineButton = document.getElementById(
   "stop-stretching-routine",
 );
+const completedExercises = [];
 
 stopStretchingRoutineButton.addEventListener("click", async () => {
   try {
     clearInterval(timerId);
     console.log("Stopping stretching routine...");
-    window.location.href = "index.html";
+    sessionStorage.setItem(
+      "completedExercises",
+      JSON.stringify(completedExercises),
+    );
+    sessionStorage.setItem("finishedRoutine", false);
+    window.location.href = "summary.html";
   } catch (error) {
     console.error("Failed to stop stretching routine:", error);
   }
@@ -35,7 +41,12 @@ function nextExercise() {
   } else {
     clearInterval(timerId);
     console.log("Stretching routine completed.");
-    window.location.href = "index.html";
+    sessionStorage.setItem(
+      "completedExercises",
+      JSON.stringify(completedExercises),
+    );
+    sessionStorage.setItem("finishedRoutine", true);
+    window.location.href = "summary.html";
   }
 }
 
@@ -45,6 +56,11 @@ function startTimer() {
   timerId = setInterval(() => {
     remainingSeconds--;
     if (remainingSeconds < 0) {
+      let exercise = routine[currentExerciseIndex].name;
+      let is_break = exercise === "Break";
+      if (!is_break) {
+        completedExercises.push(exercise);
+      }
       nextExercise();
       return;
     }
