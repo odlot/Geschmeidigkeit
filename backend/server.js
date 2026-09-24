@@ -57,6 +57,7 @@ function serveRoutine(res) {
 }
 
 const BREAK_DURATION = 3;
+const SIDE_BREAK_DURATION = 2;
 
 function buildRoutine(exercises) {
   const expandedExercises = exercises.flatMap(expandExercise);
@@ -64,17 +65,19 @@ function buildRoutine(exercises) {
   expandedExercises.forEach((exercise, index) => {
     routine.push(exercise);
     if (index < expandedExercises.length - 1) {
-      routine.push({ name: "Break", duration: BREAK_DURATION });
+      const nextExercise = expandedExercises[index + 1];
+      routine.push(buildBreak(exercise, nextExercise));
     }
   });
-  return routine;
+  return routine.map(({ index, ...exercise }) => exercise);
 }
 
-function expandExercise(exercise) {
+function expandExercise(exercise, index) {
   if (exercise.targets.length == 1) {
-    return exercise;
+    return { index: index, ...exercise };
   }
   return exercise.targets.map((target) => ({
+    index: index,
     name: `${exercise.name} (${sideLabel(target)})`,
     duration: exercise.duration,
     target: target,
@@ -88,6 +91,13 @@ function sideLabel(target) {
     return "Right";
   }
   return target;
+}
+
+function buildBreak(current, next) {
+  if (current.index === next.index) {
+    return { name: "Side Break", duration: SIDE_BREAK_DURATION };
+  }
+  return { name: "Break", duration: BREAK_DURATION };
 }
 
 server.listen(port, hostname, () => {
