@@ -1,14 +1,12 @@
 [
   {
-    "name": "Stretch A",
-    "duration": "3"
+    "name": "Standing Quadriceps Stretch",
+    "duration": "3",
+    "targets": ["quadriceps-left", "quadriceps-right"]
   },
   {
-    "name": "Stretch B",
-    "duration": "3"
-  },
-  {
-    "name": "Stretch C",
-    "duration": "3"
+    "name": "Seated Hamstring Stretch",
+    "duration": "3",
+    "targets": ["hamstrings"]
   }
 ]

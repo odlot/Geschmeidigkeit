@@ -59,14 +59,35 @@ function serveRoutine(res) {
 const BREAK_DURATION = 3;
 
 function buildRoutine(exercises) {
+  const expandedExercises = exercises.flatMap(expandExercise);
   const routine = [];
-  exercises.forEach((exercise, index) => {
+  expandedExercises.forEach((exercise, index) => {
     routine.push(exercise);
-    if (index < exercises.length - 1) {
+    if (index < expandedExercises.length - 1) {
       routine.push({ name: "Break", duration: BREAK_DURATION });
     }
   });
   return routine;
+}
+
+function expandExercise(exercise) {
+  if (exercise.targets.length == 1) {
+    return exercise;
+  }
+  return exercise.targets.map((target) => ({
+    name: `${exercise.name} (${sideLabel(target)})`,
+    duration: exercise.duration,
+    target: target,
+  }));
+}
+
+function sideLabel(target) {
+  if (target.endsWith("-left")) {
+    return "Left";
+  } else if (target.endsWith("-right")) {
+    return "Right";
+  }
+  return target;
 }
 
 server.listen(port, hostname, () => {
