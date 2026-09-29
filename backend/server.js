@@ -69,7 +69,11 @@ function buildRoutine(exercises) {
       routine.push(buildBreak(exercise, nextExercise));
     }
   });
-  return routine.map(({ index, ...exercise }) => exercise);
+  return routine.map((exerciseWithIndex) => {
+    const exercise = { ...exerciseWithIndex };
+    delete exercise.index;
+    return exercise;
+  });
 }
 
 function expandExercise(exercise, index) {
