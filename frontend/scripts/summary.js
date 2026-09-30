@@ -17,7 +17,7 @@ if (completedExercises.length > 0) {
   const list = document.createElement("ul");
   completedExercises.forEach((exercise) => {
     const listItem = document.createElement("li");
-    listItem.textContent = exercise;
+    listItem.textContent = exercise.name;
     list.appendChild(listItem);
   });
   summaryElement.appendChild(list);

@@ -2,8 +2,16 @@ const routine = JSON.parse(sessionStorage.getItem("routine") || "[]");
 
 let timerId = null;
 let currentExerciseIndex = 0;
+let elapsedSeconds = 0;
 let remainingSeconds =
   routine.length > 0 ? routine[currentExerciseIndex].duration : 0;
+let totalRemainingSeconds = routine.reduce(
+  (sum, exercise) => sum + exercise.duration,
+  0,
+);
+
+const progressElement = document.getElementById("progress");
+progressElement.max = totalRemainingSeconds;
 
 const timerElement = document.getElementById("timer");
 const currentExerciseElement = document.getElementById("current-exercise");
@@ -56,8 +64,9 @@ function startTimer() {
   timerId = setInterval(() => {
     remainingSeconds--;
     if (remainingSeconds < 0) {
-      let exercise = routine[currentExerciseIndex].name;
-      let is_break = exercise === "Break";
+      let exercise = routine[currentExerciseIndex];
+      let is_break =
+        exercise.name === "Break" || exercise.name === "Side Break";
       if (!is_break) {
         completedExercises.push(exercise);
       }
@@ -65,6 +74,7 @@ function startTimer() {
       return;
     }
     timerElement.textContent = `Current: ${remainingSeconds}s`;
+    progressElement.value = ++elapsedSeconds;
   }, 1000);
 }
 
